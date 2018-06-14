@@ -10,8 +10,6 @@ fun dataSourceFactory(propertiesFilePath: String): DataSource? {
     val dataSourceProps = Properties()
     val fis = FileInputStream(propertiesFilePath)
     dataSourceProps.load(fis)
-
-
     try {
         ds = DriverManagerDataSource()
         ds.setDriverClassName(dataSourceProps.getProperty("MYSQL_DB_DRIVER_CLASS"))

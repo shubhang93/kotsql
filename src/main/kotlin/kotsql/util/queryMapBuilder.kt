@@ -2,6 +2,9 @@ package kotsql.util
 
 import java.io.File
 
+const val SPACE_SEPARATOR = " "
+const val QUERY_SPLITTER_REGEX_PATTERN = "-- name: *"
+
 private fun getFiles(path: String): List<File> {
     return File(path).walk().map { it }.toList()
 
@@ -15,7 +18,7 @@ private fun getRawQueryList(filePath: String): List<List<String>> {
 private fun getQueriesAsString(filePath: String): String {
     val rawQueries = getRawQueryList(filePath)
 
-    return rawQueries.flatMap { it -> it.map { it } }.joinToString(" ")
+    return rawQueries.flatMap { it -> it.map { it } }.joinToString(SPACE_SEPARATOR)
 }
 
 private fun getDuplicateQueries(queryList: List<List<String>>): List<String> {
@@ -30,14 +33,14 @@ private fun getDuplicateQueries(queryList: List<List<String>>): List<String> {
 
 fun buildQueryMap(filePath: String): Map<String, String> {
     val queryList = getQueriesAsString(filePath)
-            .split(Regex("-- name: *"))
+            .split(Regex(QUERY_SPLITTER_REGEX_PATTERN))
             .filter { it -> it != "" }
-            .map { it -> it.trim().split(" ") }
+            .map { it -> it.trim().split(SPACE_SEPARATOR) }
 
     val duplicateQueries = getDuplicateQueries(queryList)
     if (duplicateQueries.size > 1) {
         throw Exception("Duplicate Queries found ---> \n $duplicateQueries")
     }
 
-    return queryList.map { it.first() to it.drop(1).joinToString(" ") }.toMap()
+    return queryList.map { it.first() to it.drop(1).joinToString(SPACE_SEPARATOR) }.toMap()
 }
