@@ -1,5 +1,7 @@
 package kotsql
 
+import kotsql.util.generateQueryNameEnum
+
 fun main(args: Array<String>) {
     val sqlService: SqlService = SqlService("/home/shubhang/IdeaProjects/kotsql/sql")
     val res = sqlService.executeSql(queryName = "product", argsMap = mapOf(Pair("code", "p233")))

@@ -17,7 +17,6 @@ private fun getRawQueryList(filePath: String): List<List<String>> {
 
 private fun getQueriesAsString(filePath: String): String {
     val rawQueries = getRawQueryList(filePath)
-
     return rawQueries.flatMap { it -> it.map { it } }.joinToString(SPACE_SEPARATOR)
 }
 
@@ -29,6 +28,7 @@ private fun getDuplicateQueries(queryList: List<List<String>>): List<String> {
             .keys
             .toList()
 }
+
 
 
 fun buildQueryMap(filePath: String): Map<String, String> {
